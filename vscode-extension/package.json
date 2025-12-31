@@ -1,0 +1,112 @@
+{
+    "name": "smart-routine-optimiser-ext",
+    "publisher": "PranavBhat",
+    "displayName": "Smart Routine Optimiser",
+    "description": "Manage your Smart Routine tasks directly from VS Code",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "smart-routine-container",
+                    "title": "Smart Routine",
+                    "icon": "resources/icon.png"
+                }
+            ]
+        },
+        "views": {
+            "smart-routine-container": [
+                {
+                    "id": "smartRoutineTasks",
+                    "name": "Today's Tasks"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "smart-routine.login",
+                "title": "Smart Routine: Login"
+            },
+            {
+                "command": "smart-routine.signup",
+                "title": "Smart Routine: Signup"
+            },
+            {
+                "command": "smart-routine.refresh",
+                "title": "Smart Routine: Refresh Tasks",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "smart-routine.addTask",
+                "title": "Smart Routine: Add Task",
+                "icon": "$(add)"
+            },
+            {
+                "command": "smart-routine.completeTask",
+                "title": "Mark Complete",
+                "icon": "$(check)"
+            },
+            {
+                "command": "smart-routine.editTask",
+                "title": "Edit Task",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "smart-routine.restructureTasks",
+                "title": "Smart Routine: AI Restructure",
+                "icon": "$(sparkle)"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "smart-routine.refresh",
+                    "group": "navigation"
+                },
+                {
+                    "command": "smart-routine.addTask",
+                    "group": "navigation"
+                },
+                {
+                    "command": "smart-routine.restructureTasks",
+                    "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "smart-routine.editTask",
+                    "when": "view == smartRoutineTasks",
+                    "group": "inline"
+                },
+                {
+                    "command": "smart-routine.completeTask",
+                    "when": "view == smartRoutineTasks",
+                    "group": "inline"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "node ./test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/node": "18.x",
+        "eslint": "^8.41.0"
+    },
+    "dependencies": {
+        "node-fetch": "^2.6.7"
+    }
+}

@@ -5,6 +5,7 @@
 
 const cron = require('node-cron');
 const db = require('../db');
+const { sendNotification } = require('../utils/notification');
 const { DateTime } = require('luxon');
 
 function startCronJobs() {
@@ -31,12 +32,13 @@ function startCronJobs() {
     try {
       const now = DateTime.local();
       const hhmm = now.toFormat('HH:mm');
-      const allUsers = (await db._dump()).users;
+      const allUsers = await db.getAllUsers();
       for (const u of allUsers) {
         const tasks = (await db.getTasksForUser(u.id)).filter(t => t.reminderTime === hhmm && !t.completed);
         for (const t of tasks) {
-          console.log(`🔔 Reminder for ${u.email}: Task "${t.title}" is scheduled for ${t.reminderTime}`);
-          // In production: send push/email/notification
+          const msg = `Task "${t.title}" is scheduled for ${t.reminderTime}`;
+          console.log(`🔔 Reminder for ${u.email}: ${msg}`);
+          sendNotification('Task Reminder', msg);
         }
       }
     } catch (err) {
