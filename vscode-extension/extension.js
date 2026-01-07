@@ -141,6 +141,25 @@ async function activate(context) {
         }
     });
 
+    let deleteTaskDisposable = vscode.commands.registerCommand('smart-routine.deleteTask', async (item) => {
+        if (!item) return;
+
+        const answer = await vscode.window.showWarningMessage(`Are you sure you want to delete task "${item.label}"?`, { modal: true }, 'Yes', 'No');
+        if (answer !== 'Yes') return;
+
+        try {
+            const success = await apiClient.deleteTask(item.taskId);
+            if (success) {
+                vscode.window.showInformationMessage('Task deleted!');
+                taskProvider.refresh();
+            } else {
+                vscode.window.showErrorMessage('Failed to delete task.');
+            }
+        } catch (err) {
+            vscode.window.showErrorMessage('Error deleting task: ' + err.message);
+        }
+    });
+
     let restructureDisposable = vscode.commands.registerCommand('smart-routine.restructureTasks', async () => {
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
@@ -171,6 +190,7 @@ async function activate(context) {
         completeDisposable,
         addTaskDisposable,
         editTaskDisposable,
+        deleteTaskDisposable,
         restructureDisposable,
         statusBarItem
     );

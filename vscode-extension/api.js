@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const BASE_URL = 'https://routinen.up.railway.app/api';
+const BASE_URL = 'http://localhost:3000/api';
 
 class ApiClient {
     constructor(context) {
@@ -166,6 +166,25 @@ class ApiClient {
             return response.ok;
         } catch (error) {
             console.error('Update task error:', error);
+            return false;
+        }
+    }
+
+    async deleteTask(taskId) {
+        const token = await this.getToken();
+        if (!token) return false;
+
+        try {
+            const response = await fetch(`${BASE_URL}/tasks/${taskId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            return response.ok;
+        } catch (error) {
+            console.error('Delete task error:', error);
             return false;
         }
     }

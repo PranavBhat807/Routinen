@@ -65,6 +65,11 @@
                 "command": "smart-routine.restructureTasks",
                 "title": "Smart Routine: AI Restructure",
                 "icon": "$(sparkle)"
+            },
+            {
+                "command": "smart-routine.deleteTask",
+                "title": "Delete Task",
+                "icon": "$(trash)"
             }
         ],
         "menus": {
@@ -90,6 +95,10 @@
                 },
                 {
                     "command": "smart-routine.completeTask",
+                    "group": "inline"
+                },
+                {
+                    "command": "smart-routine.deleteTask",
                     "when": "view == smartRoutineTasks",
                     "group": "inline"
                 }
